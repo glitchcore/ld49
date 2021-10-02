@@ -2,58 +2,45 @@ function Intro_scene(pixi) {
     let scene = new PIXI.Container();
 
     let background = new PIXI.Graphics()
-        .beginFill(0x030000)
-        .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
-        .endFill();
-
-    scene.bg = (color) => background
-        .beginFill(color)
+        .beginFill(0x97866c)
         .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
         .endFill();
 
     scene.addChild(background);
 
-    {
-        let message = new PIXI.Text("Welcome!", RED_STYLE_H1);
-        message.position.set(pixi.screen.width/2 - 100, pixi.screen.height/2);
-        scene.addChild(message);
-    }
+    /*let frames = new PIXI.Graphics()
+        .beginFill(colors)
+        graphics.lineStyle(4, 0x0, .3);*/
 
-    scene.interactive = true;
-    scene.click = function(e) {
-        console.log("click");
-    }
+    let message = new PIXI.Text("4 days before Ludum...", DIALOG_STYLE_ANSWER);
+    message.position.set(pixi.screen.width/2, pixi.screen.height/2);
+    message.alpha = 0;
+    message.anchor.set(0.5);
+    scene.addChild(message);
 
-    let blur_filter = new PIXI.filters.BlurFilter();
-    let my_filter = new PIXI.Filter(null, my_fragment, {time: 0.});
-
-    blur_filter.blur = 10;
-    scene.filters = [blur_filter, my_filter];
+    let scene_start = null;
 
     scene.update = (delta, now) => {
-        if(now/1000 % 3 > 2) {
-            blur_filter.blur = 0;
-        } else if (now/1000 % 3 > 1) {
-            blur_filter.blur = 10;
-            // my_filter.time = 0.2;
+        if(scene_start === null) scene_start = now;
+
+        if(message.alpha < 1) message.alpha += 0.02 * delta;
+
+        if(now - scene_start > 3500 && scene.alpha > 0) {
+            scene.alpha -= 0.05 * delta;
+        }
+
+        if(now - scene_start > 4000) {
+            select_scene(dialog_scene);
         }
     };
 
-    let scene_seq = [
-        dirt_scene,
-        ludum_scene,
-    ];
-    let seq_id = 0;
-
     scene.key_handler = (key, isPress) => {
-        if(isPress) {
-            let next_scene = scene_seq[seq_id % scene_seq.length];
-            select_scene(next_scene);
-            seq_id++;
-        }
     };
 
     scene.select = () => {
+        scene_start = null;
+        message.alpha = 0;
+        scene.alpha = 1;
     };
 
     return scene;
@@ -71,7 +58,7 @@ function Preintro_scene(pixi) {
 
     let message = new PIXI.Text("LD49/Unstabe. Click to begin", DIALOG_STYLE_ANSWER);
     message.anchor.set(0.5);
-    message.position.set(pixi.screen.width/2 - 100, pixi.screen.height/2);
+    message.position.set(pixi.screen.width/2, pixi.screen.height/2);
     scene.addChild(message);
 
     let fadeout = false;
