@@ -41,7 +41,7 @@ function app(pixi) {
     init_dialog_data();
 
     // select_scene(preintro_scene);
-    select_scene(dirt_scene);
+    select_scene(intro_scene, {text: "text"});
 
     window.addEventListener(
         "keydown",

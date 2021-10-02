@@ -27,6 +27,15 @@ const DIALOG_STYLE_ANSWER = new PIXI.TextStyle({
     strokeThickness: 1
 });
 
+let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
+    fontFamily: "Arial",
+    fontSize: 30,
+    fill: PIXI.utils.hex2string(colors.white),
+    strokeThickness: 1,
+    wordWrap: true,
+    wordWrapWidth: 1000,
+});
+
 const my_fragment = `
 varying vec2 vTextureCoord;
 uniform sampler2D uSampler;

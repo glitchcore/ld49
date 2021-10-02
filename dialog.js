@@ -10,14 +10,6 @@ let DIALOG_STYLE_H1 = new PIXI.TextStyle({
     dropShadowAngle: Math.PI / 7,
     dropShadowDistance: 3,
 });
-let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
-    fontFamily: "Arial",
-    fontSize: 30,
-    fill: PIXI.utils.hex2string(colors.white),
-    strokeThickness: 1,
-    wordWrap: true,
-    wordWrapWidth: 1000,
-});
 
 function Dialog_scene(pixi) {
     let scene = new PIXI.Container();
