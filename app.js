@@ -3,6 +3,8 @@ let key_handler = (key, isPress) => {};
 let intro_scene;
 let next_scene;
 let dialog_scene;
+let dirt_scene;
+let perfomance_scene;
 
 let ludum_scene = null;
 
@@ -28,6 +30,10 @@ function app(pixi) {
     intro_scene.visible = false;
     stage.addChild(intro_scene);
 
+    perfomance_scene = Perfomance_scene(pixi);
+    perfomance_scene.visible = false;
+    stage.addChild(perfomance_scene);
+
     dialog_scene = Dialog_scene(pixi);
     dialog_scene.visible = false;
     stage.addChild(dialog_scene);
@@ -35,13 +41,13 @@ function app(pixi) {
     init_dialog_data();
 
     // select_scene(preintro_scene);
-    select_scene(intro_scene);
+    select_scene(dirt_scene);
 
     window.addEventListener(
         "keydown",
         (event) => {
             key_handler(event.keyCode, true);
-            if(event.keyCode !== 116 && event.keyCode !== 122 && event.keyCode !== 123) {
+            if( event.keyCode == 38 || event.keyCode == 40 || event.keyCode == 13 /*event.keyCode !== 116 && event.keyCode !== 122 && event.keyCode !== 123*/) {
                 event.preventDefault();
             }
         },

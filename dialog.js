@@ -67,12 +67,13 @@ function Dialog_scene(pixi) {
             selected_answer = navigate('down', selected_answer, answers, borders);
         } else if( key == 13 && isPress ){
             console.log(answers[selected_answer].action);
-            select_scene(answers[selected_answer].action.scene, dialog_data[answers[selected_answer].action.params]);
+            select_scene(answers[selected_answer].action.scene, answers[selected_answer].action.params);
         }
     };
 
-    scene.select = (new_dialog) => {
-        dialog = new_dialog;
+    scene.select = (dialog_name) => {
+        console.log(dialog_name);
+        dialog = dialog_data[dialog_name];
         answers = dialog.answers;
         selected_answer = 0;
 

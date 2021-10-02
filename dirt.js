@@ -38,7 +38,7 @@ function Dirt_scene(pixi) {
             if(now - pause_time > 1000) {
                 pause = false;
                 if(sprite_id === sprite_list.length - 1) {
-                    select_scene(intro_scene);
+                    select_scene(dialog_scene, "dirty_after");
                 }
             }
         } else {
