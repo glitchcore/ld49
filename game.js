@@ -1,5 +1,6 @@
 function Intro_scene(pixi) {
     let scene = new PIXI.Container();
+    let next_screen;
 
     let background = new PIXI.Graphics()
         .beginFill(0x97866c)
@@ -30,7 +31,7 @@ function Intro_scene(pixi) {
         }
 
         if(now - scene_start > 3000) {
-            select_scene(dialog_scene, dialog_data.to_ludum_dialog);
+            select_scene( next_screen.scene, next_screen.params );
         }
     };
 
@@ -39,6 +40,7 @@ function Intro_scene(pixi) {
 
     scene.select = (param) => {
         message.text = param.text;
+        next_screen = param.next;
         
         scene_start = null;
         message.alpha = 0;
@@ -74,7 +76,13 @@ function Preintro_scene(pixi) {
         if(fadeout) {
             message.alpha -= 0.02 * delta;
             if(message.alpha <= 0) {
-                select_scene(intro_scene, {text: "4 days before Ludum..."});
+                select_scene(intro_scene, {
+                    text: "4 days before Ludum...",
+                    next: {
+                        scene: dialog_scene,
+                        params: "to_ludum_dialog"
+                    }
+                });
             }
         }
     };

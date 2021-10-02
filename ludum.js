@@ -70,7 +70,7 @@ function Ludum_scene(pixi) {
         }
 
         if(now - scene_start > 6000) {
-            select_scene(intro_scene);
+            select_scene(dialog_scene, "to_ludum_continue");
         }
     }
 
