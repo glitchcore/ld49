@@ -11,11 +11,29 @@ let RED_STYLE_H1 = new PIXI.TextStyle({
   dropShadowDistance: 3,
 });
 
+const my_fragment = `
+varying vec2 vTextureCoord;
+uniform sampler2D uSampler;
+uniform float time;
+
+void main(void)
+{
+   gl_FragColor = vTextureCoord.x > 0.
+       ? texture2D(uSampler, vTextureCoord)
+       : vec4(1., 0., 0., 1.);
+}
+`;
+
 function Intro_scene(pixi) {
     let scene = new PIXI.Container();
 
     let background = new PIXI.Graphics()
         .beginFill(0x030000)
+        .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
+        .endFill();
+
+    scene.bg = (color) => background
+        .beginFill(color)
         .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
         .endFill();
 
@@ -34,16 +52,19 @@ function Intro_scene(pixi) {
     }
 
     let blur_filter = new PIXI.filters.BlurFilter();
+    let my_filter = new PIXI.Filter(null, my_fragment, {time: 0.});
+
     blur_filter.blur = 10;
-    scene.filters = [blur_filter];
+    scene.filters = [blur_filter, my_filter];
 
     scene.update = (delta, now) => {
         if(now/1000 % 3 > 2) {
             blur_filter.blur = 0;
         } else if (now/1000 % 3 > 1) {
             blur_filter.blur = 10;
+            // my_filter.time = 0.2;
         } else {
-            select_scene(next_scene)
+            select_scene(next_scene);
         }
     };
 
