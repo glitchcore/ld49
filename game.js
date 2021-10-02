@@ -33,8 +33,16 @@ function Intro_scene(pixi) {
         select_scene(intro_scene);
     }
 
-    scene.update = (delta, now) => {
+    let blur_filter = new PIXI.filters.BlurFilter();
+    blur_filter.blur = 10;
+    scene.filters = [blur_filter];
 
+    scene.update = (delta, now) => {
+        if(now/1000 % 2 > 1) {
+            blur_filter.blur = 10;
+        } else {
+            blur_filter.blur = 0;
+        }
     };
 
     scene.key_handler = (key, isPress) => {
