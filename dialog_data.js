@@ -52,8 +52,14 @@ function init_dialog_data(){
                     name: "Сделаю на выходных",
                     action:
                     {
-                        scene: dialog_scene,
-                        params: "perfomance_pre"
+                        scene: intro_scene,
+                        params: {
+                            text: "1 day before Ludum",
+                            next: {
+                                scene: dialog_scene,
+                                params: "perfomance_pre"
+                            }
+                        }
                     }
                 }
             ]
