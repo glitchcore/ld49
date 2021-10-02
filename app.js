@@ -1,5 +1,7 @@
 let update = () => {};
 let key_handler = (key, isPress) => {};
+let intro_scene;
+let next_scene;
 
 function app(pixi) {
     let stage = new PIXI.Stage();
@@ -7,9 +9,13 @@ function app(pixi) {
 
     PIXI.utils.sayHello("LD49 unstable!");
 
-    let intro_scene = Intro_scene(pixi);
+    intro_scene = Intro_scene(pixi);
     intro_scene.visible = false;
     stage.addChild(intro_scene);
+
+    next_scene = Next_scene(pixi);
+    next_scene.visible = false;
+    stage.addChild(next_scene);
 
     select_scene(intro_scene);
 
