@@ -17,7 +17,11 @@ function app(pixi) {
     next_scene.visible = false;
     stage.addChild(next_scene);
 
-    select_scene(intro_scene);
+    ludum_scene = Ludum_scene(pixi);
+    ludum_scene.visible = false;
+    stage.addChild(ludum_scene);
+
+    select_scene(ludum_scene);
 
     window.addEventListener(
         "keydown",
