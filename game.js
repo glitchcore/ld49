@@ -32,6 +32,11 @@ function Intro_scene(pixi) {
         .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
         .endFill();
 
+    scene.bg = (color) => background
+        .beginFill(color)
+        .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
+        .endFill();
+
     scene.addChild(background);
 
     {
