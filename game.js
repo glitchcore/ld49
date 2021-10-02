@@ -12,7 +12,7 @@ function Intro_scene(pixi) {
         .beginFill(colors)
         graphics.lineStyle(4, 0x0, .3);*/
 
-    let message = new PIXI.Text("4 days before Ludum...", DIALOG_STYLE_ANSWER);
+    let message = new PIXI.Text("", DIALOG_STYLE_ANSWER);
     message.position.set(pixi.screen.width/2, pixi.screen.height/2);
     message.alpha = 0;
     message.anchor.set(0.5);
@@ -37,7 +37,9 @@ function Intro_scene(pixi) {
     scene.key_handler = (key, isPress) => {
     };
 
-    scene.select = () => {
+    scene.select = (param) => {
+        message.text = param.text;
+        
         scene_start = null;
         message.alpha = 0;
         scene.alpha = 1;
@@ -72,7 +74,7 @@ function Preintro_scene(pixi) {
         if(fadeout) {
             message.alpha -= 0.02 * delta;
             if(message.alpha <= 0) {
-                select_scene(intro_scene);
+                select_scene(intro_scene, {text: "4 days before Ludum..."});
             }
         }
     };
