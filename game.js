@@ -13,6 +13,9 @@ function Intro_scene(pixi) {
     const FRAME_HEIGHT = pixi.screen.width * 0.08;
     const FRAME_SPACE = pixi.screen.width * 0.008;
 
+    let container = new PIXI.Container();
+    scene.addChild(container);
+
     let frames = new PIXI.Graphics()
         // .beginFill(colors.white)
         .lineStyle(4, 0xffffff, 1.)
@@ -23,12 +26,12 @@ function Intro_scene(pixi) {
         .drawRoundedRect(FRAME_WIDTH + 3 * FRAME_SPACE, 0, FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH/4)
         .drawRoundedRect(2 * FRAME_WIDTH + 4 * FRAME_SPACE, 0, FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH/4);
     frames.position.set(pixi.screen.width/2, pixi.screen.height/2 - frames.height/2);
-    scene.addChild(frames);
+    container.addChild(frames);
 
     let digits = [0, 1, 2, 3, 4, 5].map(digit => {
         let digit_graphic = new PIXI.Text(digit.toString(), DIALOG_STYLE_ANSWER);
         digit_graphic.anchor.set(0.5);
-        scene.addChild(digit_graphic);
+        container.addChild(digit_graphic);
 
         return digit_graphic;
     });
@@ -46,7 +49,7 @@ function Intro_scene(pixi) {
         - FRAME_WIDTH * 2 - FRAME_SPACE * 3.5 + pixi.screen.width/2,
         pixi.screen.height/2 - FRAME_HEIGHT/2 - FRAME_SPACE * 2
     );
-    scene.addChild(days_label);
+    container.addChild(days_label);
 
     let hours_label = new PIXI.Text("HOURS", DIALOG_STYLE_MAIN);
     hours_label.anchor.set(0.5);
@@ -54,7 +57,7 @@ function Intro_scene(pixi) {
         pixi.screen.width/2,
         pixi.screen.height/2 - FRAME_HEIGHT/2 - FRAME_SPACE * 2
     );
-    scene.addChild(hours_label);
+    container.addChild(hours_label);
 
     let minutes_label = new PIXI.Text("MINUTES", DIALOG_STYLE_MAIN);
     minutes_label.anchor.set(0.5);
@@ -62,7 +65,7 @@ function Intro_scene(pixi) {
         FRAME_WIDTH * 2 + FRAME_SPACE * 3.5 + pixi.screen.width/2,
         pixi.screen.height/2 - FRAME_HEIGHT/2 - FRAME_SPACE * 2
     );
-    scene.addChild(minutes_label);
+    container.addChild(minutes_label);
 
     let main_label = new PIXI.Text("Ludum Dare 49 Starts", DIALOG_STYLE_ANSWER);
     main_label.anchor.set(0.5);
@@ -70,7 +73,7 @@ function Intro_scene(pixi) {
         pixi.screen.width/2,
         pixi.screen.height/2 - FRAME_HEIGHT/2 - FRAME_SPACE * 8
     );
-    scene.addChild(main_label);
+    container.addChild(main_label);
 
 
     let message = new PIXI.Text("", DIALOG_STYLE_ANSWER);
@@ -81,29 +84,46 @@ function Intro_scene(pixi) {
 
     let scene_start = null;
 
+    let time_remain = 0;
+    let update_time = null;
+
     scene.update = (delta, now) => {
+        digits[1].text = time_remain.toString();
+
         if(scene_start === null) scene_start = now;
+        if(update_time === null) update_time = now;
 
-        if(message.alpha < 1) message.alpha += 0.02 * delta;
+        if(now - update_time > 20) {
+            update_time = now;
 
-        /*if(now - scene_start > 2500 && scene.alpha > 0) {
+            digits.forEach((digit, id) => {
+                if(id < 2) return;
+                digit.text = (Math.floor(Math.random() * 6)).toString()[0];
+            });
+        }
+
+        if(update_time !== null && container.alpha < 1) {
+            container.alpha += 0.01 * delta;
+        }
+
+        if(now - scene_start > 2500 && scene.alpha > 0) {
             scene.alpha -= 0.05 * delta;
         }
 
         if(now - scene_start > 3000) {
             select_scene(next_screen.scene, next_screen.params);
-        }*/
+        }
     };
 
     scene.key_handler = (key, isPress) => {
     };
 
     scene.select = (param) => {
-        // message.text = param.text;
+        time_remain = param.time;
         next_screen = param.next;
 
         scene_start = null;
-        message.alpha = 0;
+        container.alpha = 0;
         scene.alpha = 1;
     };
 
@@ -137,7 +157,7 @@ function Preintro_scene(pixi) {
             message.alpha -= 0.02 * delta;
             if(message.alpha <= 0) {
                 select_scene(intro_scene, {
-                    text: "4 days before Ludum...",
+                    time: 4,
                     next: {
                         scene: dialog_scene,
                         params: "to_ludum_dialog"

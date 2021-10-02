@@ -23,7 +23,7 @@ function init_dialog_data(){
                     {
                         scene: intro_scene,
                         params: {
-                            text: "2 days before Ludum...",
+                            time: 2,
                             next: {
                                 scene: dialog_scene,
                                 params: "dirty_pre"
@@ -54,7 +54,7 @@ function init_dialog_data(){
                     {
                         scene: intro_scene,
                         params: {
-                            text: "1 day before Ludum",
+                            time: 1,
                             next: {
                                 scene: dialog_scene,
                                 params: "perfomance_pre"

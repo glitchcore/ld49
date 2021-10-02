@@ -40,8 +40,8 @@ function app(pixi) {
     
     init_dialog_data();
 
-    // select_scene(preintro_scene);
-    select_scene(intro_scene, {text: "text"});
+    select_scene(preintro_scene);
+    // select_scene(intro_scene, {time: 2});
 
     window.addEventListener(
         "keydown",
