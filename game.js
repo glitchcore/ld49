@@ -8,9 +8,16 @@ function Intro_scene(pixi) {
 
     scene.addChild(background);
 
-    /*let frames = new PIXI.Graphics()
-        .beginFill(colors)
-        graphics.lineStyle(4, 0x0, .3);*/
+    const FRAME_WIDTH = pixi.screen.width * 0.02;
+    const FRAME_HEIGHT = pixi.screen.width * 0.04;
+
+    let frames = new PIXI.Graphics()
+        // .beginFill(colors.white)
+        .lineStyle(4, 0xffffff, 1.)
+        .drawRoundedRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH/4)
+        .endFill();
+    scene.addChild(frames);
+
 
     let message = new PIXI.Text("", DIALOG_STYLE_ANSWER);
     message.position.set(pixi.screen.width/2, pixi.screen.height/2);
@@ -30,7 +37,7 @@ function Intro_scene(pixi) {
         }
 
         if(now - scene_start > 3000) {
-            select_scene(dialog_scene, dialog_data.start_dialog);
+            // select_scene(dialog_scene, dialog_data.start_dialog);
         }
     };
 
@@ -39,7 +46,7 @@ function Intro_scene(pixi) {
 
     scene.select = (param) => {
         message.text = param.text;
-        
+
         scene_start = null;
         message.alpha = 0;
         scene.alpha = 1;

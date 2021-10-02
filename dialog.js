@@ -14,7 +14,9 @@ let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
     fontFamily: "Arial",
     fontSize: 30,
     fill: PIXI.utils.hex2string(colors.white),
-    strokeThickness: 1
+    strokeThickness: 1,
+    wordWrap: true,
+    wordWrapWidth: 1000,
 });
 
 function Dialog_scene(pixi) {
@@ -46,7 +48,7 @@ function Dialog_scene(pixi) {
 
 
     let top_message = new PIXI.Text("", DIALOG_STYLE_MAIN);
-    top_message.position.set( 10, 10 );
+    top_message.position.set(10, 10);
     dialog_text_field.addChild(top_message);
 
     dialog_text_field.x = 100;
