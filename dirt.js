@@ -29,21 +29,33 @@ function Dirt_scene(pixi) {
     scene.filters = [blur_filter];
 
     let sprite_id = 0;
+    let pause_time = null;
+    let pause = true;
 
     scene.update = (delta, now) => {
-        let eoc = true;
-        if(sprite_list[sprite_id].alpha > 0) {
-            sprite_list[sprite_id].alpha -= 0.004 * delta;
-            eoc = false;
-        }
-        if(sprite_list[sprite_id + 1].alpha <= 1) {
-            sprite_list[sprite_id + 1].alpha += 0.004 * delta;
-            eoc = false;
-        }
-        if(eoc) {
-            sprite_id++;
-            if(sprite_id === sprite_list.length - 1) {
-                select_scene(intro_scene);
+        if(pause) {
+            if(pause_time === null) pause_time = now;
+            if(now - pause_time > 1000) {
+                pause = false;
+                if(sprite_id === sprite_list.length - 1) {
+                    select_scene(intro_scene);
+                }
+            }
+        } else {
+            let eoc = true;
+            if(sprite_list[sprite_id].alpha > 0) {
+                sprite_list[sprite_id].alpha -= 0.02 * delta;
+                eoc = false;
+            }
+            if(sprite_list[sprite_id + 1].alpha <= 1) {
+                sprite_list[sprite_id + 1].alpha += 0.02 * delta;
+                eoc = false;
+            }
+            if(eoc) {
+                sprite_id++;
+                
+                pause = true;
+                pause_time = null;
             }
         }
     }
@@ -56,9 +68,12 @@ function Dirt_scene(pixi) {
         sprite_list.forEach(sprite => {
             sprite.alpha = 0;
         });
-        sprite_list[0].alpha = 2;
+        sprite_list[0].alpha = 1;
 
         sprite_id = 0;
+
+        pause = true;
+        pause_time = null;
     };
 
     return scene;
