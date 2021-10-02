@@ -2,6 +2,7 @@ let update = () => {};
 let key_handler = (key, isPress) => {};
 let intro_scene;
 let next_scene;
+let dialog_scene;
 
 let ludum_scene = null;
 
@@ -14,7 +15,7 @@ function app(pixi) {
     next_scene = Next_scene(pixi);
     next_scene.visible = false;
     stage.addChild(next_scene);
-
+    
     ludum_scene = Ludum_scene(pixi);
     ludum_scene.visible = false;
     stage.addChild(ludum_scene);
@@ -27,7 +28,12 @@ function app(pixi) {
     intro_scene.visible = false;
     stage.addChild(intro_scene);
 
-    select_scene(intro_scene);
+    dialog_scene = Dialog_scene(pixi);
+    dialog_scene.visible = false;
+    stage.addChild(dialog_scene);
+
+    select_scene(dialog_scene);
+    // select_scene(intro_scene);
 
     window.addEventListener(
         "keydown",
