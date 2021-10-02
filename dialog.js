@@ -1,14 +1,3 @@
-
-
-let colors = {
-    background_gray: 0x666650,
-    light_yellow: 0xF5F592,
-    gray: 0x393938,
-    dark_gray: 0x292905,
-    black: 0x000000,
-    white: 0xFFFFFF,
-};
-
 let DIALOG_STYLE_H1 = new PIXI.TextStyle({
     fontFamily: "Arial",
     fontSize: 50,
@@ -24,12 +13,6 @@ let DIALOG_STYLE_H1 = new PIXI.TextStyle({
 let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
     fontFamily: "Arial",
     fontSize: 30,
-    fill: PIXI.utils.hex2string(colors.white),
-    strokeThickness: 1
-});
-let DIALOG_STYLE_ANSWER = new PIXI.TextStyle({
-    fontFamily: "Arial",
-    fontSize: 80,
     fill: PIXI.utils.hex2string(colors.white),
     strokeThickness: 1
 });

@@ -22,7 +22,6 @@ function Intro_scene(pixi) {
     scene.interactive = true;
     scene.click = function(e) {
         console.log("click");
-        select_scene(intro_scene);
     }
 
     let blur_filter = new PIXI.filters.BlurFilter();
@@ -60,36 +59,38 @@ function Intro_scene(pixi) {
     return scene;
 }
 
-function Next_scene(pixi) {
+function Preintro_scene(pixi) {
     let scene = new PIXI.Container();
 
     let background = new PIXI.Graphics()
-        .beginFill(0xFAD208)
+        .beginFill(0x97866c)
         .drawRect(0, 0, pixi.screen.width, pixi.screen.height)
         .endFill();
 
     scene.addChild(background);
 
-    {
-        let message = new PIXI.Text("GUBBLE GUM!", RED_STYLE_H1);
-        message.position.set(pixi.screen.width/2 - 100, pixi.screen.height/2);
-        scene.addChild(message);
-    }
+    let message = new PIXI.Text("LD49/Unstabe. Click to begin", DIALOG_STYLE_ANSWER);
+    message.anchor.set(0.5);
+    message.position.set(pixi.screen.width/2 - 100, pixi.screen.height/2);
+    scene.addChild(message);
+
+    let fadeout = false;
 
     scene.interactive = true;
     scene.click = function(e) {
-        console.log("click");
-        select_scene(intro_scene);
+        fadeout = true;
     }
 
     scene.update = (delta, now) => {
-        if(now/1000 % 3 > 1) {
-            select_scene(intro_scene)
+        if(fadeout) {
+            message.alpha -= 0.02 * delta;
+            if(message.alpha <= 0) {
+                select_scene(intro_scene);
+            }
         }
     };
 
     scene.key_handler = (key, isPress) => {
-
     };
 
     scene.select = () => {

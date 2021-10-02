@@ -12,9 +12,9 @@ function app(pixi) {
 
     PIXI.utils.sayHello("LD49 unstable!");
 
-    next_scene = Next_scene(pixi);
-    next_scene.visible = false;
-    stage.addChild(next_scene);
+    let preintro_scene = Preintro_scene(pixi);
+    preintro_scene.visible = false;
+    stage.addChild(preintro_scene);
     
     ludum_scene = Ludum_scene(pixi);
     ludum_scene.visible = false;
@@ -32,8 +32,7 @@ function app(pixi) {
     dialog_scene.visible = false;
     stage.addChild(dialog_scene);
 
-    select_scene(dialog_scene);
-    // select_scene(intro_scene);
+    select_scene(preintro_scene);
 
     window.addEventListener(
         "keydown",
