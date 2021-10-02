@@ -2,6 +2,7 @@ let update = () => {};
 let key_handler = (key, isPress) => {};
 let intro_scene;
 let next_scene;
+let dialog_scene;
 
 function app(pixi) {
     let stage = new PIXI.Stage();
@@ -17,7 +18,11 @@ function app(pixi) {
     next_scene.visible = false;
     stage.addChild(next_scene);
 
-    select_scene(intro_scene);
+    dialog_scene = Dialog_scene(pixi);
+    dialog_scene.visible = false;
+    stage.addChild(dialog_scene);
+
+    select_scene(dialog_scene);
 
     window.addEventListener(
         "keydown",
