@@ -37,13 +37,19 @@ function Intro_scene(pixi) {
         } else if (now/1000 % 3 > 1) {
             blur_filter.blur = 10;
             // my_filter.time = 0.2;
-        } else {
-            select_scene(next_scene);
         }
     };
 
+    let scene_seq = [
+        ludum_scene,
+    ];
+    let seq_id = 0;
+
     scene.key_handler = (key, isPress) => {
-        
+        let next_scene = scene_seq[seq_id % scene_seq.length];
+        console.log(next_scene);
+        select_scene(next_scene);
+        seq_id++;
     };
 
     scene.select = () => {

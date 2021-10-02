@@ -3,15 +3,13 @@ let key_handler = (key, isPress) => {};
 let intro_scene;
 let next_scene;
 
+let ludum_scene = null;
+
 function app(pixi) {
     let stage = new PIXI.Stage();
     pixi.stage = stage;
 
     PIXI.utils.sayHello("LD49 unstable!");
-
-    intro_scene = Intro_scene(pixi);
-    intro_scene.visible = false;
-    stage.addChild(intro_scene);
 
     next_scene = Next_scene(pixi);
     next_scene.visible = false;
@@ -21,7 +19,11 @@ function app(pixi) {
     ludum_scene.visible = false;
     stage.addChild(ludum_scene);
 
-    select_scene(ludum_scene);
+    intro_scene = Intro_scene(pixi);
+    intro_scene.visible = false;
+    stage.addChild(intro_scene);
+
+    select_scene(intro_scene);
 
     window.addEventListener(
         "keydown",
