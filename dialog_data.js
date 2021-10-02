@@ -2,23 +2,14 @@ let dialog_data = {};
 
 function init_dialog_data(){
     dialog_data = {
-        start_dialog: {
-            text: "Уже утро?",
+        to_ludum_dialog: {
+            text: "Хм... Скоро людумдаре! Мы пойдём?",
             answers: [
                 {
-                    name: "Открыть глаза",
+                    name: "Конечно!",
                     action:
                     {
-                        scene: dialog_scene,
-                        params: "choose_activity"
-                    }
-                },
-                {
-                    name: "Спать ещё",
-                    action:
-                    {
-                        scene: dialog_scene,
-                        params: "start_dialog"
+                        scene: ludum_scene
                     }
                 }
             ]

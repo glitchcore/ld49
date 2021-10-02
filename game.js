@@ -30,7 +30,7 @@ function Intro_scene(pixi) {
         }
 
         if(now - scene_start > 3000) {
-            select_scene(dialog_scene, dialog_data.start_dialog);
+            select_scene(dialog_scene, dialog_data.to_ludum_dialog);
         }
     };
 
