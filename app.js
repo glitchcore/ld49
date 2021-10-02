@@ -19,6 +19,10 @@ function app(pixi) {
     ludum_scene.visible = false;
     stage.addChild(ludum_scene);
 
+    dirt_scene = Dirt_scene(pixi);
+    dirt_scene.visible = false;
+    stage.addChild(dirt_scene);
+
     intro_scene = Intro_scene(pixi);
     intro_scene.visible = false;
     stage.addChild(intro_scene);

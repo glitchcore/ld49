@@ -41,15 +41,17 @@ function Intro_scene(pixi) {
     };
 
     let scene_seq = [
+        dirt_scene,
         ludum_scene,
     ];
     let seq_id = 0;
 
     scene.key_handler = (key, isPress) => {
-        let next_scene = scene_seq[seq_id % scene_seq.length];
-        console.log(next_scene);
-        select_scene(next_scene);
-        seq_id++;
+        if(isPress) {
+            let next_scene = scene_seq[seq_id % scene_seq.length];
+            select_scene(next_scene);
+            seq_id++;
+        }
     };
 
     scene.select = () => {
