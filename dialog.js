@@ -17,16 +17,12 @@ let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
     strokeThickness: 1
 });
 
-let answers = [
-    { name: "Кушац" },
-    { name: "Гуляц" },
-    { name: "Гуляц и кушац" },
-    { name: "Орац"}
-]
-
 function Dialog_scene(pixi) {
     let scene = new PIXI.Container();
-    let selected_answer = 0;
+    let dialog;
+    let answer;
+    let selected_answer;
+    let borders;
 
     let background = new PIXI.Graphics()
         .beginFill(colors.black)
@@ -48,25 +44,14 @@ function Dialog_scene(pixi) {
         .drawRect( 0, 0, pixi.screen.width - 200, 150)
         .endFill();
 
-    {
-        // dialog
-        let message = new PIXI.Text("Какой-то текст, возможно, очень длинный", DIALOG_STYLE_MAIN);
-        message.position.set( 10, 10 );
-        dialog_text_field.addChild(message);
-    }
+
+    let top_message = new PIXI.Text("", DIALOG_STYLE_MAIN);
+    top_message.position.set( 10, 10 );
+    dialog_text_field.addChild(top_message);
 
     dialog_text_field.x = 100;
     dialog_text_field.y = 100;
     scene.addChild(dialog_text_field);
-
-    //показываем варианты
-    borders = show_answers(answers, scene);
-
-    scene.interactive = true;
-    scene.click = function(e) {
-        console.log("click");
-        select_scene(intro_scene);
-    }
 
     scene.update = (delta, now) => {
     };
@@ -78,10 +63,21 @@ function Dialog_scene(pixi) {
             selected_answer = navigate('up', selected_answer, answers, borders);
         } else if( key == 40 && isPress ){
             selected_answer = navigate('down', selected_answer, answers, borders);
+        } else if( key == 13 && isPress ){
+            console.log(answers[selected_answer].action);
+            select_scene(answers[selected_answer].action.scene, dialog_data[answers[selected_answer].action.params]);
         }
     };
 
-    scene.select = () => {
+    scene.select = (new_dialog) => {
+        dialog = new_dialog;
+        answers = dialog.answers;
+        selected_answer = 0;
+
+        top_message.text = dialog.text;
+
+        //показываем варианты
+        borders = show_answers(answers, scene);
     };
 
     return scene;

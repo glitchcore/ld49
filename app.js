@@ -31,6 +31,8 @@ function app(pixi) {
     dialog_scene = Dialog_scene(pixi);
     dialog_scene.visible = false;
     stage.addChild(dialog_scene);
+    
+    init_dialog_data();
 
     select_scene(preintro_scene);
 

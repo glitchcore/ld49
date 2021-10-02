@@ -25,12 +25,12 @@ function Intro_scene(pixi) {
 
         if(message.alpha < 1) message.alpha += 0.02 * delta;
 
-        if(now - scene_start > 3500 && scene.alpha > 0) {
+        if(now - scene_start > 2500 && scene.alpha > 0) {
             scene.alpha -= 0.05 * delta;
         }
 
-        if(now - scene_start > 4000) {
-            select_scene(dialog_scene);
+        if(now - scene_start > 3000) {
+            select_scene(dialog_scene, dialog_data.start_dialog);
         }
     };
 
