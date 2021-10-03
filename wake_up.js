@@ -62,12 +62,6 @@ function Wake_up_scene(pixi) {
                 world_bottom.height += step;
             }
         }
-
-        //if (world_bottom.getBounds().height > 0.8 * rect_height/2){
-        //    console.log('AAAAAAAAAA');
-        //    world_top.color = 0xE3FAFF;
-        //}
-
     }
 
     scene.key_handler = (key, isPress) => {
