@@ -17,6 +17,7 @@ function Dialog_scene(pixi) {
     let answer;
     let selected_answer;
     let borders;
+    let fadeout = false;
 
     let background = new PIXI.Graphics()
         .beginFill(colors.black)
@@ -48,26 +49,37 @@ function Dialog_scene(pixi) {
     scene.addChild(dialog_text_field);
 
     scene.update = (delta, now) => {
+        if(fadeout) {
+            scene.alpha -= 0.02 * delta;
+            if(scene.alpha <= 0) {
+                //console.log(answers[selected_answer].action);
+                select_scene(answers[selected_answer].action.scene, answers[selected_answer].action.params);
+            }
+        }
     };
 
     scene.key_handler = (key, isPress) => {
-        //console.log(key);// 38 - вверх, 40 - вниз, 13 - enter
-        //console.log(isPress);
-        if( key == 38 && isPress ){
-            selected_answer = navigate('up', selected_answer, answers, borders);
-        } else if( key == 40 && isPress ){
-            selected_answer = navigate('down', selected_answer, answers, borders);
-        } else if( key == 13 && isPress ){
-            console.log(answers[selected_answer].action);
-            select_scene(answers[selected_answer].action.scene, answers[selected_answer].action.params);
+        console.log(key);// 38 - вверх, 40 - вниз, 13 - enter
+        console.log(isPress);
+        console.log(fadeout);
+        if(fadeout === false) {
+            if( key == 38 && isPress ){
+                selected_answer = navigate('up', selected_answer, answers, borders);
+            } else if( key == 40 && isPress ){
+                selected_answer = navigate('down', selected_answer, answers, borders);
+            } else if( key == 13 && isPress ){
+                fadeout = true;
+            }
         }
     };
 
     scene.select = (dialog_name) => {
         //console.log(dialog_name);
+        scene.alpha = 1;
         dialog = dialog_data[dialog_name];
         answers = dialog.answers;
         selected_answer = 0;
+        fadeout = false;
 
         top_message.text = dialog.text;
 
