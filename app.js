@@ -46,8 +46,8 @@ function app(pixi) {
     init_dialog_data();
 
     //select_scene(dialog_scene, "perfomance_pre");
-    select_scene(preintro_scene);
-    // select_scene(perfomance_scene);
+    // select_scene(preintro_scene);
+    select_scene(wake_up_scene);
 
     window.addEventListener(
         "keydown",
@@ -84,7 +84,6 @@ function select_scene(scene, params) {
 
     update = scene.update;
     key_handler = scene.key_handler;
-    console.log(params);
     scene.select(params);
 }
 

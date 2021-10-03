@@ -12,6 +12,14 @@ function Wake_up_scene(pixi) {
         .endFill();
     scene.addChild(background);
 
+    /*let room_sprite = PIXI.Sprite.from("assets/room-wake.png");
+    room_sprite.anchor.set(0.5);
+    room_sprite.width = scene.width * 0.8;
+    room_sprite.height = scene.height * 0.8;
+    room_sprite.x = scene.width * 0.5;
+    room_sprite.y = scene.height * 0.5;
+    scene.addChild(room_sprite);*/
+
     let world_top = new PIXI.Graphics()
         .beginFill(0xE3FAFF)
         .drawRect(0, 0, rect_width, 10)
@@ -32,6 +40,10 @@ function Wake_up_scene(pixi) {
     //console.log(world_top.getBounds());
     //console.log("------------");
     //console.log(world_bottom.getBounds());
+
+    let blur_filter = new PIXI.filters.BlurFilter();
+    blur_filter.blur = 5;
+    scene.filters = [blur_filter];
 
     let scene_start = null;
     let update_time = null;
@@ -63,10 +75,12 @@ function Wake_up_scene(pixi) {
     };
 
     scene.select = (param) => {
-        if (param == 'good'){
+        if (param === 'good'){
             step = 4;
-        } else if (param == 'bad') {
+        } else if (param === 'bad') {
             step = 2;
+        } else {
+            step = 3;
         }
     };
 
