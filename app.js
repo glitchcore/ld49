@@ -68,6 +68,7 @@ function eye_wrap(scene) {
     scene.scene_start = null;
     scene.eye_wrap_flag = true;
     let step;
+    let eye_opened = false;
     let update = scene.update;
 
     let wrap_update = (delta, now) => {
@@ -76,10 +77,13 @@ function eye_wrap(scene) {
 
             step = 16 * delta;
             if( now - scene.scene_start > 200){
-                if (eye_top.getBounds().height > 7 ) {
+                if (!eye_opened) {
                     eye_top.height -= step;
                     eye_bottom.y += step;
                     eye_bottom.height -= step;
+                    if (eye_top.getBounds().height - step < 0){
+                        eye_opened = true;
+                    }
                 } else {
                     bg_left.alpha -= 0.08 * delta;
                 }
@@ -136,8 +140,8 @@ function app(pixi) {
     init_dialog_data();
 
     // select_scene(dialog_scene, "morning_1");
-    select_scene(preintro_scene);
-    // select_scene(dialog_scene, "to_ludum_dialog");
+    //select_scene(preintro_scene);
+    select_scene(dialog_scene, "to_ludum_dialog");
     // select_scene(wake_up_scene);
 
     window.addEventListener(
