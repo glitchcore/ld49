@@ -103,14 +103,14 @@ function Intro_scene(pixi) {
         }
 
         if(update_time !== null && container.alpha < 1) {
-            container.alpha += 0.01 * delta;
+            container.alpha += 0.007 * delta;
         }
 
-        if(now - scene_start > 2500 && scene.alpha > 0) {
+        if(now - scene_start > 3000 && scene.alpha > 0) {
             scene.alpha -= 0.05 * delta;
         }
 
-        if(now - scene_start > 3000) {
+        if(now - scene_start > 3500) {
             select_scene(next_screen.scene, next_screen.params);
         }
     };
