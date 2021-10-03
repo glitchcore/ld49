@@ -84,7 +84,6 @@ function select_scene(scene, params) {
 
     update = scene.update;
     key_handler = scene.key_handler;
-    console.log(params);
     scene.select(params);
 }
 
