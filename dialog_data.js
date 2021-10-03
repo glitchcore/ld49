@@ -77,7 +77,63 @@ function init_dialog_data(){
                     name: "На выходных выступаем!",
                     action:
                     {
-                        scene: perfomance_scene
+                        scene: dialog_scene,
+                        params: "morning_1"
+                    }
+                }
+            ]
+        },
+        morning_1: {
+            text: "Утро... Или ещё ночь... Какой сейчас год... Спаааать...",
+            answers: [
+                {
+                    name: "Спать ещё",
+                    action:
+                    {
+                        scene: dialog_scene,
+                        params: "morning_2"
+                    }
+                },
+                {
+                    name: "Просыпаемся",
+                    action:
+                    {
+                        scene: wake_up_scene,
+                        params: "bad"
+                    }
+                }
+            ]
+        },
+        morning_2: {
+            text: "Кажется, выспались!",
+            answers: [
+                {
+                    name: "Просыпаемся",
+                    action:
+                    {
+                        scene: wake_up_scene,
+                        params: "good"
+                    }
+                },
+                {
+                    name: "Спать ещё",
+                    action:
+                    {
+                        scene: dialog_scene,
+                        params: "morning_3"
+                    }
+                }
+            ]
+        },
+        morning_3: {
+            text: "Мы всё проспали? Ежки-кошки...",
+            answers: [
+                {
+                    name: "Просыпаемся! Без вариантов!",
+                    action:
+                    {
+                        scene: wake_up_scene,
+                        params: "bad"
                     }
                 }
             ]

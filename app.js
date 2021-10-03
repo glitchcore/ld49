@@ -5,6 +5,7 @@ let next_scene;
 let dialog_scene;
 let dirt_scene;
 let perfomance_scene;
+let wake_up_scene;
 
 let ludum_scene = null;
 
@@ -34,12 +35,17 @@ function app(pixi) {
     perfomance_scene.visible = false;
     stage.addChild(perfomance_scene);
 
+    wake_up_scene = Wake_up_scene(pixi);
+    wake_up_scene.visible = false;
+    stage.addChild(wake_up_scene);
+
     dialog_scene = Dialog_scene(pixi);
     dialog_scene.visible = false;
     stage.addChild(dialog_scene);
     
     init_dialog_data();
 
+    //select_scene(dialog_scene, "perfomance_pre");
     select_scene(preintro_scene);
 
     window.addEventListener(
@@ -77,6 +83,7 @@ function select_scene(scene, params) {
 
     update = scene.update;
     key_handler = scene.key_handler;
+    console.log(params);
     scene.select(params);
 }
 

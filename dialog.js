@@ -70,7 +70,7 @@ function Dialog_scene(pixi) {
     };
 
     scene.select = (dialog_name) => {
-        console.log(dialog_name);
+        //console.log(dialog_name);
         dialog = dialog_data[dialog_name];
         answers = dialog.answers;
         selected_answer = 0;
