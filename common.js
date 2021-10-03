@@ -36,6 +36,19 @@ let DIALOG_STYLE_MAIN = new PIXI.TextStyle({
     wordWrapWidth: 1000,
 });
 
+let DIALOG_STYLE_H1 = new PIXI.TextStyle({
+    fontFamily: "Arial",
+    fontSize: 50,
+    fill: "#4E4A36",
+    stroke: PIXI.utils.hex2string(colors.gray),
+    strokeThickness: 1,
+    dropShadow: true,
+    dropShadowColor: PIXI.utils.hex2string(colors.light_yellow),
+    dropShadowBlur: 15,
+    dropShadowAngle: Math.PI / 7,
+    dropShadowDistance: 3,
+});
+
 const my_fragment = `
 varying vec2 vTextureCoord;
 uniform sampler2D uSampler;

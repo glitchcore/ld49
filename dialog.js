@@ -1,16 +1,3 @@
-let DIALOG_STYLE_H1 = new PIXI.TextStyle({
-    fontFamily: "Arial",
-    fontSize: 50,
-    fill: "#4E4A36",
-    stroke: PIXI.utils.hex2string(colors.gray),
-    strokeThickness: 1,
-    dropShadow: true,
-    dropShadowColor: PIXI.utils.hex2string(colors.light_yellow),
-    dropShadowBlur: 15,
-    dropShadowAngle: Math.PI / 7,
-    dropShadowDistance: 3,
-});
-
 function Dialog_scene(pixi) {
     let scene = new PIXI.Container();
     let dialog;
@@ -25,13 +12,6 @@ function Dialog_scene(pixi) {
         .endFill();
 
     scene.addChild(background);
-
-    {
-        // title
-        let message = new PIXI.Text("Dialog", DIALOG_STYLE_H1);
-        message.position.set( pixi.screen.width/2, pixi.screen.height - 100 );
-        scene.addChild(message);
-    }
 
     // поле для текста
     let dialog_text_field = new PIXI.Graphics()
@@ -59,32 +39,26 @@ function Dialog_scene(pixi) {
     };
 
     scene.key_handler = (key, isPress) => {
-        console.log(key);// 38 - вверх, 40 - вниз, 13 - enter
-        console.log(isPress);
-        console.log(fadeout);
-        if(fadeout === false) {
-            if( key == 38 && isPress ){
+        // console.log(key);// 38 - вверх, 40 - вниз, 13 - enter
+        if(fadeout === false && isPress) {
+            if(key == 38){
                 selected_answer = navigate('up', selected_answer, answers, borders);
-            } else if( key == 40 && isPress ){
+            } else if(key == 40){
                 selected_answer = navigate('down', selected_answer, answers, borders);
-            } else if( key == 13 && isPress ){
+            } else if(key == 13){
                 fadeout = true;
             }
         }
     };
 
     scene.select = (dialog_name) => {
-        //console.log(dialog_name);
         scene.alpha = 1;
-        dialog = dialog_data[dialog_name];
-        answers = dialog.answers;
-        selected_answer = 0;
         fadeout = false;
 
-        top_message.text = dialog.text;
-
-        //показываем варианты
-        borders = show_answers(answers, scene);
+        // показываем варианты
+        answers = show_answers(dialog_data[dialog_name].answers, scene);
+        selected_answer = navigate("", 0, answers);
+        top_message.text = dialog_data[dialog_name].text;
     };
 
     return scene;
@@ -96,56 +70,59 @@ function show_answers(answers, scene){
         .drawRect( 0, 0, pixi.screen.width - 200, 300)
         .endFill();
 
-    let variants_delay = 100;
-    let borders = [];
+    let variants_interval = 100;
 
-    answers.forEach( (v, v_num) => {
-        console.log(v_num, v);
+    answers = answers.map((v, v_num) => {
         // рамка для текста ответа
-        let answer_shape = new PIXI.Graphics()
+        let cursor = new PIXI.Graphics()
             .beginFill(colors.white)
-            .drawRect(0, 0 + variants_delay * v_num, pixi.screen.width - 200, 100)
+            .drawRect(0, 0, pixi.screen.width - 200, 100)
             .endFill();
-        borders.push(answer_shape);
+
         // поле для текста ответа
-        let answer_field = new PIXI.Graphics()
+        let cursor_inner = new PIXI.Graphics()
             .beginFill(colors.black)
-            .drawRect(3, 3 + variants_delay * v_num, answer_shape.getBounds().width - 6, answer_shape.getBounds().height - 6)
+            .drawRect(
+                0, 0,
+                cursor.getBounds().width - 6, cursor.getBounds().height - 6
+            )
             .endFill();
-        answer_shape.addChild(answer_field);
-        if ( v_num != 0 ){
-            answer_shape.visible = false;
-        }
-        dialog_answers_area.addChild(answer_shape);
-        {
-            //  добавляем вариант ответа
-            let message = new PIXI.Text(v.name, DIALOG_STYLE_ANSWER);
-            message.position.set( 10, 10 + variants_delay * v_num );
-            dialog_answers_area.addChild(message);
-        }
+        cursor_inner.position.set(3, 3);
+        cursor.addChild(cursor_inner);
+        cursor.position.set(0, variants_interval * v_num);
+        cursor.visible = false;
+
+        dialog_answers_area.addChild(cursor);
+        //  добавляем вариант ответа
+        let text = new PIXI.Text(v.name, DIALOG_STYLE_ANSWER);
+        text.position.set(10, 10 + variants_interval * v_num);
+        dialog_answers_area.addChild(text);
+
+        return {
+            cursor,
+            text,
+            action: v.action,
+        };
     });
+
     dialog_answers_area.x = 100;
     dialog_answers_area.y = 300;
     scene.addChild(dialog_answers_area);
 
-    return borders;
+    return answers;
 }
 
-function navigate(direction, selected_answer, answers, borders){
-    let length = answers.length;
-    console.log(length, length - 1);
-
-    borders.forEach( (border) => {
-        border.visible = false;
+function navigate(direction, selected_answer, answers) {
+    answers.forEach((answer) => {
+        answer.cursor.visible = false;
     });
 
-    if ( direction == 'up' && selected_answer > 0 ){
+    if (direction == 'up' && selected_answer > 0){
         selected_answer--;
-    } else if ( direction == 'down' && selected_answer < length - 1 ){
+    } else if (direction == 'down' && selected_answer < answers.length - 1){
         selected_answer++;
     }
 
-    borders[selected_answer].visible = true;
-    console.log("выбран ", selected_answer);
+    answers[selected_answer].cursor.visible = true;
     return selected_answer;
 }

@@ -45,8 +45,8 @@ function app(pixi) {
     
     init_dialog_data();
 
-    //select_scene(dialog_scene, "perfomance_pre");
-    select_scene(preintro_scene);
+    select_scene(dialog_scene, "morning_1");
+    // select_scene(preintro_scene);
     // select_scene(wake_up_scene);
 
     window.addEventListener(
