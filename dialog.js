@@ -1,6 +1,11 @@
+let obsessions_data = [
+];
+
 function Dialog_scene(pixi) {
     let scene = new PIXI.Container();
-    let dialog;
+    scene.sortableChildren = true;
+
+    let next_obsession;
     let answer;
     let selected_answer;
     let borders;
@@ -28,12 +33,42 @@ function Dialog_scene(pixi) {
     dialog_text_field.y = 100;
     scene.addChild(dialog_text_field);
 
+    let answers_obsessions = [];
+
+    let obsessions = [];
+
     scene.update = (delta, now) => {
+        if(fadeout === false) {
+            let need_update = false;
+            obsessions.forEach(obsession => {
+                if(obsession.update(delta, now)) {
+                    need_update = true;
+                }
+            });
+            if(need_update) {
+                answers_obsessions = [...answers, ...obsessions.filter(x => x.is_answer)];
+                shuffle(answers_obsessions);
+
+                selected_answer = navigate(
+                    "", selected_answer, answers_obsessions
+                );
+            }
+        }
+
         if(fadeout) {
             scene.alpha -= 0.02 * delta;
             if(scene.alpha <= 0) {
-                //console.log(answers[selected_answer].action);
-                select_scene(answers[selected_answer].action.scene, answers[selected_answer].action.params);
+                // cleanup scene
+                answers.forEach(answer => scene.removeChild(answer));
+                obsessions.forEach(obsession => scene.removeChild(obsession));
+                
+                select_scene(
+                    answers_obsessions[selected_answer].action.scene,
+                    answers_obsessions[selected_answer].action.params
+                );
+                if(next_obsession !== undefined) {
+                    obsessions_data.push(next_obsession);
+                }
             }
         }
     };
@@ -42,9 +77,13 @@ function Dialog_scene(pixi) {
         // console.log(key);// 38 - вверх, 40 - вниз, 13 - enter
         if(fadeout === false && isPress) {
             if(key == 38){
-                selected_answer = navigate('up', selected_answer, answers, borders);
+                selected_answer = navigate(
+                    'up', selected_answer, answers_obsessions
+                );
             } else if(key == 40){
-                selected_answer = navigate('down', selected_answer, answers, borders);
+                selected_answer = navigate(
+                    'down', selected_answer, answers_obsessions
+                );
             } else if(key == 13){
                 fadeout = true;
             }
@@ -55,10 +94,16 @@ function Dialog_scene(pixi) {
         scene.alpha = 1;
         fadeout = false;
 
+        obsessions = show_obsessions(obsessions_data, scene);
+
         // показываем варианты
         answers = show_answers(dialog_data[dialog_name].answers, scene);
-        selected_answer = navigate("", 0, answers);
+        answers_obsessions = [...answers, ...obsessions.filter(x => x.is_answer)];
+        selected_answer = navigate("", 0, [...answers, ...obsessions.filter(x => x.is_answer)]);
+        next_obsession = dialog_data[dialog_name].obsession;
         top_message.text = dialog_data[dialog_name].text;
+
+        obsessions.forEach(obsession => scene.addChild(obsession));
     };
 
     return scene;
@@ -94,7 +139,7 @@ function show_answers(answers, scene){
 
         dialog_answers_area.addChild(cursor);
         //  добавляем вариант ответа
-        let text = new PIXI.Text(v.name, DIALOG_STYLE_ANSWER);
+        let text = new PIXI.Text(v.name, DIALOG_STYLE_ANSWER.clone());
         text.position.set(10, 10 + variants_interval * v_num);
         dialog_answers_area.addChild(text);
 
@@ -116,6 +161,8 @@ function navigate(direction, selected_answer, answers) {
     answers.forEach((answer) => {
         answer.cursor.visible = false;
     });
+
+    if(selected_answer > (answers.length - 1)) selected_answer = answers.length - 1;
 
     if (direction == 'up' && selected_answer > 0){
         selected_answer--;

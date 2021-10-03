@@ -20,7 +20,6 @@ function Perfomance_scene(pixi) {
     const FRAME_SPACE = pixi.screen.width * 0.008;
 
     let frames = [0,0,0,0].map((_, id) => {
-        console.log("frame");
         frame = new PIXI.Graphics()
             .beginFill(colors.white)
             .lineStyle(4, 0xffffff, 1.)

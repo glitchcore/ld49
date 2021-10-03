@@ -7,8 +7,7 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "Конечно!",
-                    action:
-                    {
+                    action: {
                         scene: ludum_scene
                     }
                 }
@@ -16,11 +15,16 @@ function init_dialog_data(){
         },
         to_ludum_continue: {
             text: "Всё! Зарегались :) Теперь надо не забыть до выходных",
+            obsession: {
+                label: "Ludum!",
+                action: {
+                    scene: ludum_scene,
+                }
+            },
             answers: [
                 {
                     name: "Запомнили",
-                    action:
-                    {
+                    action: {
                         scene: intro_scene,
                         params: {
                             time: 2,
@@ -38,8 +42,7 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "Смотреть",
-                    action:
-                    {
+                    action: {
                         scene: dirt_scene
                     }
                 }
@@ -47,6 +50,12 @@ function init_dialog_data(){
         },
         dirty_after: {
             text: "Пора прибраться...",
+            obsession: {
+                label: "Прибраться!",
+                action: {
+                    scene: dirt_scene,
+                }
+            },
             answers: [
                 {
                     name: "Сделаю на выходных",
@@ -78,6 +87,12 @@ function init_dialog_data(){
         },
         perfomance_after: {
             text: "Ура! Нас зовут играть крутую музыку с крутыми музыкантами :)",
+            obsession: {
+                label: "Подготовиться к выступлению",
+                action: {
+                    scene: perfomance_scene,
+                }
+            },
             answers: [
                 {
                     name: "На выходных выступаем!",
