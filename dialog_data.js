@@ -96,8 +96,7 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "На выходных выступаем!",
-                    action:
-                    {
+                    action: {
                         scene: dialog_scene,
                         params: "morning_1"
                     }
@@ -109,16 +108,14 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "Спать ещё",
-                    action:
-                    {
+                    action: {
                         scene: dialog_scene,
                         params: "morning_2"
                     }
                 },
                 {
                     name: "Просыпаемся",
-                    action:
-                    {
+                    action: {
                         scene: wake_up_scene,
                         params: "bad"
                     }
@@ -130,16 +127,14 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "Просыпаемся",
-                    action:
-                    {
+                    action: {
                         scene: wake_up_scene,
                         params: "good"
                     }
                 },
                 {
                     name: "Спать ещё",
-                    action:
-                    {
+                    action: {
                         scene: dialog_scene,
                         params: "morning_3"
                     }
@@ -151,8 +146,7 @@ function init_dialog_data(){
             answers: [
                 {
                     name: "Просыпаемся! Без вариантов!",
-                    action:
-                    {
+                    action: {
                         scene: wake_up_scene,
                         params: "bad"
                     }

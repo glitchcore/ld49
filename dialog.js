@@ -37,6 +37,15 @@ function Dialog_scene(pixi) {
 
     let obsessions = [];
 
+    let dialog_answers_area = new PIXI.Graphics()
+        .beginFill(colors.black)
+        .drawRect( 0, 0, pixi.screen.width * 0.8, 200)
+        .endFill();
+    set_anchor(dialog_answers_area, 0.5);
+    dialog_answers_area.x = pixi.screen.width/2;
+    dialog_answers_area.y = pixi.screen.height/2;
+    scene.addChild(dialog_answers_area);
+
     scene.update = (delta, now) => {
         if(fadeout === false) {
             let need_update = false;
@@ -59,7 +68,7 @@ function Dialog_scene(pixi) {
             scene.alpha -= 0.02 * delta;
             if(scene.alpha <= 0) {
                 // cleanup scene
-                answers.forEach(answer => scene.removeChild(answer));
+                answers.forEach(answer => dialog_answers_area.removeChild(answer));
                 obsessions.forEach(obsession => scene.removeChild(obsession));
                 
                 select_scene(
@@ -97,69 +106,47 @@ function Dialog_scene(pixi) {
         obsessions = show_obsessions(obsessions_data, scene);
 
         // показываем варианты
-        answers = show_answers(dialog_data[dialog_name].answers, scene);
+        answers = show_answers(dialog_data[dialog_name].answers, dialog_answers_area);
         answers_obsessions = [...answers, ...obsessions.filter(x => x.is_answer)];
         selected_answer = navigate("", 0, [...answers, ...obsessions.filter(x => x.is_answer)]);
         next_obsession = dialog_data[dialog_name].obsession;
         top_message.text = dialog_data[dialog_name].text;
-
-        obsessions.forEach(obsession => scene.addChild(obsession));
     };
 
     return scene;
 }
 
-function show_answers(answers, scene){
-    let dialog_answers_area = new PIXI.Graphics()
-        .beginFill(colors.black)
-        .drawRect( 0, 0, pixi.screen.width - 200, 300)
-        .endFill();
-
+function show_answers(answers, area){
     let variants_interval = 100;
 
     answers = answers.map((v, v_num) => {
-        // рамка для текста ответа
-        let cursor = new PIXI.Graphics()
-            .beginFill(colors.white)
-            .drawRect(0, 0, pixi.screen.width - 200, 100)
-            .endFill();
+        let self = new PIXI.Container();
 
-        // поле для текста ответа
-        let cursor_inner = new PIXI.Graphics()
-            .beginFill(colors.black)
-            .drawRect(
-                0, 0,
-                cursor.getBounds().width - 6, cursor.getBounds().height - 6
-            )
-            .endFill();
-        cursor_inner.position.set(3, 3);
-        cursor.addChild(cursor_inner);
-        cursor.position.set(0, variants_interval * v_num);
-        cursor.visible = false;
+        add_answer(self, v.name);
 
-        dialog_answers_area.addChild(cursor);
-        //  добавляем вариант ответа
-        let text = new PIXI.Text(v.name, DIALOG_STYLE_ANSWER.clone());
-        text.position.set(10, 10 + variants_interval * v_num);
-        dialog_answers_area.addChild(text);
+        self.position.set(area.width/2, variants_interval * v_num);
 
-        return {
-            cursor,
-            text,
-            action: v.action,
+        area.addChild(self);
+
+        self.set_cursor = (state) => {
+            self.cursor.visible = state;
+            self.text.style.fill = state ? colors.black : colors.white;
         };
-    });
 
-    dialog_answers_area.x = 100;
-    dialog_answers_area.y = 300;
-    scene.addChild(dialog_answers_area);
+        self.set_cursor(false);
+
+        self.action = v.action;
+
+        return self;
+    });
+    
 
     return answers;
 }
 
 function navigate(direction, selected_answer, answers) {
     answers.forEach((answer) => {
-        answer.cursor.visible = false;
+        answer.set_cursor(false);
     });
 
     if(selected_answer > (answers.length - 1)) selected_answer = answers.length - 1;
@@ -170,6 +157,6 @@ function navigate(direction, selected_answer, answers) {
         selected_answer++;
     }
 
-    answers[selected_answer].cursor.visible = true;
+    answers[selected_answer].set_cursor(true);
     return selected_answer;
 }

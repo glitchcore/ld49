@@ -3,30 +3,7 @@ function show_obsessions(obsessions_data, scene) {
     return obsessions_data.map(obsession => {
         let self = new PIXI.Container();
 
-        let cursor = new PIXI.Graphics()
-            .beginFill(colors.white)
-            .drawRect(0, 0, pixi.screen.width - 200, 100)
-            .endFill();
-
-        // поле для текста ответа
-        let cursor_inner = new PIXI.Graphics()
-            .beginFill(colors.black)
-            .drawRect(
-                0, 0,
-                cursor.getBounds().width - 6, cursor.getBounds().height - 6
-            )
-            .endFill();
-        cursor_inner.position.set(3, 3);
-        cursor.addChild(cursor_inner);
-        cursor.visible = false;
-        self.addChild(cursor);
-
-        self.cursor = cursor;
-
-        let text = new PIXI.Text(obsession.label, DIALOG_STYLE_ANSWER.clone());
-        text.style.fill = 0xff0000;
-        self.addChild(text);
-        self.text = text;
+        add_answer(self, obsession.label);
         
         self.is_answer = false;
         self.is_answer_prev = self.is_answer;
@@ -35,6 +12,10 @@ function show_obsessions(obsessions_data, scene) {
         self.update_time = 500;
 
         self.zIndex = 99;
+
+        self.set_cursor = (state) => {
+            self.cursor.visible = state;
+        };
 
         self.update = (delta, now) => {
             let need_update = false;
@@ -63,7 +44,9 @@ function show_obsessions(obsessions_data, scene) {
 
                     self.is_answer = false;
                     self.text.style.fill = 0xff0000;
-                    self.cursor.visible = false;
+                    
+
+                    self.set_cursor(false);
                 }
 
                 if(self.is_answer !== self.is_answer_prev) need_update = true;
@@ -74,6 +57,8 @@ function show_obsessions(obsessions_data, scene) {
         };
 
         self.update(0, null);
+
+        scene.addChild(self);
 
         self.action = obsession.action;
 

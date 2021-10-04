@@ -22,7 +22,7 @@ const RED_STYLE_H1 = new PIXI.TextStyle({
 
 const DIALOG_STYLE_ANSWER = new PIXI.TextStyle({
     fontFamily: "Arial",
-    fontSize: 60,
+    fontSize: 50,
     fill: PIXI.utils.hex2string(colors.white),
     strokeThickness: 1
 });
@@ -78,4 +78,34 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+function set_anchor(self, value) {
+    self.pivot.x = value * self.width / self.scale.x;
+    self.pivot.y = value * self.height / self.scale.y;
+}
+
+function add_answer(self, label) {
+    //  добавляем вариант ответа
+    let text = new PIXI.Text(label, DIALOG_STYLE_ANSWER.clone());
+    text.anchor.set(0.5);
+
+    self.text_bounds = text.getBounds();
+
+    const PADDING = 2;
+
+    // рамка для текста ответа
+    let cursor = new PIXI.Graphics()
+        .beginFill(colors.white)
+        .drawRect(
+            -PADDING, -PADDING,
+            self.text_bounds.width + PADDING * 2, self.text_bounds.height + PADDING * 2
+        )
+        .endFill();
+    set_anchor(cursor, 0.5);
+    self.addChild(cursor);
+    self.cursor = cursor;
+
+    self.addChild(text);
+    self.text = text;
 }
